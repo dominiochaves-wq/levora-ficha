@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ficha de Cadastro — Clínica Levorà</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --accent:#C9A96E;--accent-dk:#A8843A;--bg:#F7F3EE;--card:#FFFFFF;
+    --border:#E8DED0;--text:#2C2218;--muted:#9A8878;--green:#6B9E7A;--red:#C4736A;
+    --cream:#FAF7F4;
+  }
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:0 0 60px}
+  .topo{background:linear-gradient(135deg,#2C2218 0%,#3d2f22 100%);padding:32px 24px 28px;text-align:center;color:#fff}
+  .topo img{height:40px;margin-bottom:12px;opacity:.9}
+  .topo h1{font-family:Georgia,serif;font-size:22px;font-weight:400;font-style:italic;color:var(--accent);margin-bottom:4px}
+  .topo p{font-size:12px;color:#c4b49e;letter-spacing:.06em}
+  .container{max-width:600px;margin:0 auto;padding:24px 16px}
+  .secao{background:var(--card);border-radius:16px;border:1px solid var(--border);padding:22px 20px;margin-bottom:16px}
+  .secao-titulo{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:18px;display:flex;align-items:center;gap:8px}
+  .secao-titulo span{font-size:16px}
+  .campo{margin-bottom:14px}
+  label{display:block;font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+  input,select,textarea{width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--border);background:var(--cream);color:var(--text);font-size:14px;font-family:inherit;outline:none;transition:border .15s}
+  input:focus,select:focus,textarea:focus{border-color:var(--accent)}
+  textarea{resize:vertical;min-height:80px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+  @media(max-width:480px){.grid2,.grid3{grid-template-columns:1fr}}
+
+  /* Checkboxes estilizados */
+  .check-group{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+  .check-item{display:flex;align-items:center;gap:6px;background:var(--cream);border:1px solid var(--border);border-radius:8px;padding:8px 12px;cursor:pointer;font-size:13px;transition:all .15s;user-select:none}
+  .check-item:has(input:checked){background:var(--accent)18;border-color:var(--accent)60;color:var(--accent);font-weight:600}
+  .check-item input{width:auto;padding:0;margin:0;accent-color:var(--accent)}
+
+  /* Radio */
+  .radio-group{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
+  .radio-item{display:flex;align-items:center;gap:6px;background:var(--cream);border:1px solid var(--border);border-radius:8px;padding:8px 16px;cursor:pointer;font-size:13px;transition:all .15s;user-select:none}
+  .radio-item:has(input:checked){background:var(--accent)18;border-color:var(--accent)60;color:var(--accent);font-weight:600}
+  .radio-item input{width:auto;padding:0;margin:0;accent-color:var(--accent)}
+
+  .obr{color:var(--red)}
+  .btn{width:100%;padding:16px;background:var(--accent);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.04em;transition:background .2s;margin-top:8px}
+  .btn:hover{background:var(--accent-dk)}
+  .btn:disabled{background:var(--muted);cursor:not-allowed}
+  .progress-bar{height:4px;background:var(--border);border-radius:4px;margin-bottom:24px;overflow:hidden}
+  .progress-fill{height:100%;background:var(--accent);border-radius:4px;transition:width .4s}
+  .etapa-label{font-size:12px;color:var(--muted);text-align:center;margin-bottom:8px}
+  .success{text-align:center;padding:40px 24px}
+  .success .icon{font-size:60px;margin-bottom:16px}
+  .success h2{font-family:Georgia,serif;font-size:24px;color:var(--accent);margin-bottom:8px}
+  .success p{color:var(--muted);font-size:14px;line-height:1.6}
+  .hidden{display:none}
+  .nota{font-size:11px;color:var(--muted);margin-top:6px;font-style:italic}
+  .termo{background:var(--cream);border:1px solid var(--border);border-radius:10px;padding:14px;font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:12px;max-height:120px;overflow-y:auto}
+</style>
+</head>
+<body>
+
+<div class="topo">
+  <div style="font-size:28px;margin-bottom:8px">✦</div>
+  <h1>Clínica Levorà</h1>
+  <p>FICHA DE CADASTRO E ANAMNESE</p>
+  <p style="margin-top:6px;font-size:11px;opacity:.7">Dra. Thaís Lezo · Biomedicina Estética · Jundiaí - SP</p>
+</div>
+
+<div class="container">
+
+  <!-- Progresso -->
+  <div id="progresso-wrap">
+    <div class="etapa-label" id="etapa-label">Etapa 1 de 3 — Dados Pessoais</div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:33%"></div></div>
+  </div>
+
+  <!-- ═══ ETAPA 1: DADOS PESSOAIS ═══ -->
+  <div id="etapa1">
+    <div class="secao">
+      <div class="secao-titulo"><span>👤</span> Dados Pessoais</div>
+
+      <div class="campo">
+        <label>Nome Completo <span class="obr">*</span></label>
+        <input type="text" id="nome" placeholder="Seu nome completo" required/>
+      </div>
+
+      <div class="grid2">
+        <div class="campo">
+          <label>Data de Nascimento <span class="obr">*</span></label>
+          <input type="date" id="dataNasc" required/>
+        </div>
+        <div class="campo">
+          <label>CPF</label>
+          <input type="text" id="cpf" placeholder="000.000.000-00" maxlength="14" oninput="mascaraCPF(this)"/>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="campo">
+          <label>Telefone / WhatsApp <span class="obr">*</span></label>
+          <input type="tel" id="telefone" placeholder="(11) 99999-9999" required oninput="mascaraTel(this)"/>
+        </div>
+        <div class="campo">
+          <label>E-mail</label>
+          <input type="email" id="email" placeholder="seu@email.com"/>
+        </div>
+      </div>
+
+      <div class="campo">
+        <label>Endereço</label>
+        <input type="text" id="endereco" placeholder="Rua, número, bairro, cidade"/>
+      </div>
+
+      <div class="campo">
+        <label>Como nos conheceu?</label>
+        <select id="indicadoPor">
+          <option value="">Selecione...</option>
+          <option value="Instagram">Instagram</option>
+          <option value="Anúncio Instagram">Anúncio Instagram</option>
+          <option value="Anúncio Google">Anúncio Google</option>
+          <option value="Anúncio Facebook">Anúncio Facebook</option>
+          <option value="Google">Google (busca orgânica)</option>
+          <option value="Facebook">Facebook</option>
+          <option value="TikTok">TikTok</option>
+          <option value="Passagem pela rua">Passagem pela rua</option>
+          <option value="indicacao">Indicação de cliente</option>
+          <option value="Outros">Outros</option>
+        </select>
+      </div>
+
+      <div class="campo hidden" id="campo-indicador">
+        <label>Nome de quem indicou</label>
+        <input type="text" id="indicador" placeholder="Nome da amiga que indicou"/>
+      </div>
+    </div>
+
+    <button class="btn" onclick="irEtapa(2)">Próximo →</button>
+  </div>
+
+  <!-- ═══ ETAPA 2: ANAMNESE ═══ -->
+  <div id="etapa2" class="hidden">
+    <div class="secao">
+      <div class="secao-titulo"><span>🩺</span> Saúde e Histórico Médico</div>
+
+      <div class="campo">
+        <label>Tem alguma doença ou condição de saúde?</label>
+        <div class="check-group" id="doencas">
+          <label class="check-item"><input type="checkbox" value="Diabetes"/> Diabetes</label>
+          <label class="check-item"><input type="checkbox" value="Hipertensão"/> Hipertensão</label>
+          <label class="check-item"><input type="checkbox" value="Hipotensão"/> Hipotensão</label>
+          <label class="check-item"><input type="checkbox" value="Cardiopatia"/> Cardiopatia</label>
+          <label class="check-item"><input type="checkbox" value="Tireoide"/> Tiroide</label>
+          <label class="check-item"><input type="checkbox" value="Lúpus"/> Lúpus</label>
+          <label class="check-item"><input type="checkbox" value="Coagulopatia"/> Coagulopatia</label>
+          <label class="check-item"><input type="checkbox" value="Câncer"/> Câncer</label>
+          <label class="check-item"><input type="checkbox" value="Epilepsia"/> Epilepsia</label>
+          <label class="check-item"><input type="checkbox" value="Nenhuma"/> Nenhuma</label>
+        </div>
+      </div>
+
+      <div class="campo">
+        <label>Outras condições não listadas acima</label>
+        <input type="text" id="doencasOutras" placeholder="Ex: fibromialgia, psoríase..."/>
+      </div>
+
+      <div class="campo">
+        <label>Faz uso de algum medicamento?</label>
+        <div class="radio-group">
+          <label class="radio-item"><input type="radio" name="usaMed" value="Não" checked/> Não</label>
+          <label class="radio-item"><input type="radio" name="usaMed" value="Sim"/> Sim</label>
+        </div>
+      </div>
+      <div class="campo hidden" id="campo-medicamento">
+        <label>Quais medicamentos?</label>
+        <input type="text" id="medicamentos" placeholder="Ex: anticoagulantes, isotretinoína, antidepressivos..."/>
+      </div>
+
+      <div class="campo">
+        <label>Tem alergias?</label>
+        <div class="radio-group">
+          <label class="radio-item"><input type="radio" name="alergia" value="Não" checked/> Não</label>
+          <label class="radio-item"><input type="radio" name="alergia" value="Sim"/> Sim</label>
+        </div>
+      </div>
+      <div class="campo hidden" id="campo-alergia">
+        <label>A quê é alérgica?</label>
+        <input type="text" id="alergias" placeholder="Ex: lidocaína, látex, penicilina..."/>
+      </div>
+
+      <div class="campo">
+        <label>Está grávida ou amamentando?</label>
+        <div class="radio-group">
+          <label class="radio-item"><input type="radio" name="gravida" value="Não" checked/> Não</label>
+          <label class="radio-item"><input type="radio" name="gravida" value="Grávida"/> Grávida</label>
+          <label class="radio-item"><input type="radio" name="gravida" value="Amamentando"/> Amamentando</label>
+        </div>
+      </div>
+
+      <div class="campo">
+        <label>Já realizou procedimentos estéticos anteriormente?</label>
+        <div class="radio-group">
+          <label class="radio-item"><input type="radio" name="procAnterior" value="Não" checked/> Não</label>
+          <label class="radio-item"><input type="radio" name="procAnterior" value="Sim"/> Sim</label>
+        </div>
+      </div>
+      <div class="campo hidden" id="campo-proc-anterior">
+        <label>Quais procedimentos já fez?</label>
+        <input type="text" id="procAnteriores" placeholder="Ex: botox, preenchimento, laser..."/>
+      </div>
+    </div>
+
+    <div class="secao">
+      <div class="secao-titulo"><span>✨</span> Pele e Cuidados</div>
+
+      <div class="campo">
+        <label>Tipo de pele</label>
+        <div class="radio-group">
+          <label class="radio-item"><input type="radio" name="tipoPele" value="Normal"/> Normal</label>
+          <label class="radio-item"><input type="radio" name="tipoPele" value="Oleosa"/> Oleosa</label>
+          <label class="radio-item"><input type="radio" name="tipoPele" value="Seca"/> Seca</label>
+          <label class="radio-item"><input type="radio" name="tipoPele" value="Mista"/> Mista</label>
+          <label class="radio-item"><input type="radio" name="tipoPele" value="Sensível"/> Sensível</label>
+        </div>
+      </div>
+
+      <div class="campo">
+        <label>Principais queixas / o que deseja melhorar?</label>
+        <div class="check-group">
+          <label class="check-item"><input type="checkbox" value="Rugas e linhas finas"/> Rugas e linhas finas</label>
+          <label class="check-item"><input type="checkbox" value="Flacidez"/> Flacidez</label>
+          <label class="check-item"><input type="checkbox" value="Manchas"/> Manchas</label>
+          <label class="check-item"><input type="checkbox" value="Acne / Cicatrizes"/> Acne / Cicatrizes</label>
+          <label class="check-item"><input type="checkbox" value="Olheiras"/> Olheiras</label>
+          <label class="check-item"><input type="checkbox" value="Contorno facial"/> Contorno facial</label>
+          <label class="check-item"><input type="checkbox" value="Hidratação"/> Hidratação</label>
+          <label class="check-item"><input type="checkbox" value="Rejuvenescimento geral"/> Rejuvenescimento geral</label>
+        </div>
+      </div>
+
+      <div class="campo">
+        <label>Usa protetor solar diariamente?</label>
+        <div class="radio-group">
+          <label class="radio-item"><input type="radio" name="protetor" value="Sim, diariamente"/> Sim, diariamente</label>
+          <label class="radio-item"><input type="radio" name="protetor" value="Às vezes"/> Às vezes</label>
+          <label class="radio-item"><input type="radio" name="protetor" value="Não"/> Não</label>
+        </div>
+      </div>
+
+      <div class="campo">
+        <label>Fuma?</label>
+        <div class="radio-group">
+          <label class="radio-item"><input type="radio" name="fuma" value="Não" checked/> Não</label>
+          <label class="radio-item"><input type="radio" name="fuma" value="Sim"/> Sim</label>
+          <label class="radio-item"><input type="radio" name="fuma" value="Ex-fumante"/> Ex-fumante</label>
+        </div>
+      </div>
+
+      <div class="campo">
+        <label>Observações adicionais</label>
+        <textarea id="obs" placeholder="Alguma informação importante que queira compartilhar com a Dra. Thaís..."></textarea>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:10px">
+      <button class="btn" style="background:var(--muted);flex:0 0 auto;width:auto;padding:16px 24px" onclick="irEtapa(1)">← Voltar</button>
+      <button class="btn" onclick="irEtapa(3)" style="flex:1">Próximo →</button>
+    </div>
+  </div>
+
+  <!-- ═══ ETAPA 3: AUTORIZAÇÃO ═══ -->
+  <div id="etapa3" class="hidden">
+    <div class="secao">
+      <div class="secao-titulo"><span>📋</span> Termos e Autorização</div>
+
+      <div class="termo">
+        <strong>TERMO DE CONSENTIMENTO INFORMADO</strong><br/><br/>
+        Declaro que as informações fornecidas nesta ficha são verdadeiras e completas. Autorizo a Clínica Levorà, sob responsabilidade da Dra. Thaís Lezo (CRBM 55437), a utilizar meus dados para fins de atendimento clínico, seguindo as normas da LGPD (Lei 13.709/2018).<br/><br/>
+        Estou ciente de que serei orientada sobre os procedimentos, riscos e cuidados antes de qualquer intervenção, e que meu consentimento específico será solicitado a cada procedimento realizado.
+      </div>
+
+      <div class="campo">
+        <label class="check-item" style="border-radius:10px;padding:14px">
+          <input type="checkbox" id="aceito" style="width:auto"/>
+          <span>Li e aceito os termos acima. Confirmo que todas as informações são verdadeiras. <span class="obr">*</span></span>
+        </label>
+      </div>
+
+      <div class="campo">
+        <label>Autorizo o uso de imagens para fins educacionais (antes/depois)</label>
+        <div class="radio-group">
+          <label class="radio-item"><input type="radio" name="imgAutoriza" value="Sim, autorizo"/> ✅ Sim, autorizo</label>
+          <label class="radio-item"><input type="radio" name="imgAutoriza" value="Não autorizo"/> ❌ Não autorizo</label>
+          <label class="radio-item"><input type="radio" name="imgAutoriza" value="Apenas sem rosto"/> 🙈 Apenas sem identificação</label>
+        </div>
+      </div>
+
+      <div class="campo">
+        <label>Assinatura digital (seu nome completo) <span class="obr">*</span></label>
+        <input type="text" id="assinaturaDigital" placeholder="Digite seu nome completo como assinatura"/>
+        <div class="nota">Ao digitar seu nome, você confirma sua assinatura digital neste documento.</div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:10px">
+      <button class="btn" style="background:var(--muted);flex:0 0 auto;width:auto;padding:16px 24px" onclick="irEtapa(2)">← Voltar</button>
+      <button class="btn" id="btn-enviar" onclick="enviar()" style="flex:1">✓ Enviar Ficha</button>
+    </div>
+  </div>
+
+  <!-- ═══ SUCESSO ═══ -->
+  <div id="sucesso" class="hidden secao success">
+    <div class="icon">🌸</div>
+    <h2>Ficha recebida!</h2>
+    <p>Obrigada, <strong id="nome-sucesso"></strong>!<br/>
+    Seus dados foram enviados com sucesso para a Clínica Levorà.<br/><br/>
+    A Dra. Thaís entrará em contato em breve para confirmar seu atendimento.<br/><br/>
+    <span style="color:var(--accent);font-weight:600">Clínica Levorà · Jundiaí - SP</span></p>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+// ── Máscaras ──
+function mascaraCPF(el){
+  let v=el.value.replace(/\D/g,'').slice(0,11);
+  if(v.length>9)v=v.replace(/(\d{3})(\d{3})(\d{3})(\d+)/,'$1.$2.$3-$4');
+  else if(v.length>6)v=v.replace(/(\d{3})(\d{3})(\d+)/,'$1.$2.$3');
+  else if(v.length>3)v=v.replace(/(\d{3})(\d+)/,'$1.$2');
+  el.value=v;
+}
+function mascaraTel(el){
+  let v=el.value.replace(/\D/g,'').slice(0,11);
+  if(v.length>10)v=v.replace(/(\d{2})(\d{5})(\d+)/,'($1) $2-$3');
+  else if(v.length>6)v=v.replace(/(\d{2})(\d{4})(\d+)/,'($1) $2-$3');
+  else if(v.length>2)v=v.replace(/(\d{2})(\d+)/,'($1) $2');
+  el.value=v;
+}
+
+// ── Campos condicionais ──
+document.getElementById('indicadoPor').addEventListener('change',function(){
+  document.getElementById('campo-indicador').classList.toggle('hidden',this.value!=='indicacao');
+});
+document.querySelectorAll('[name="usaMed"]').forEach(r=>r.addEventListener('change',function(){
+  document.getElementById('campo-medicamento').classList.toggle('hidden',this.value!=='Sim');
+}));
+document.querySelectorAll('[name="alergia"]').forEach(r=>r.addEventListener('change',function(){
+  document.getElementById('campo-alergia').classList.toggle('hidden',this.value!=='Sim');
+}));
+document.querySelectorAll('[name="procAnterior"]').forEach(r=>r.addEventListener('change',function(){
+  document.getElementById('campo-proc-anterior').classList.toggle('hidden',this.value!=='Sim');
+}));
+
+// ── Navegação entre etapas ──
+function irEtapa(n){
+  if(n===2){
+    if(!document.getElementById('nome').value.trim()) return alert('Por favor, informe seu nome completo.');
+    if(!document.getElementById('dataNasc').value) return alert('Por favor, informe sua data de nascimento.');
+    if(!document.getElementById('telefone').value.trim()) return alert('Por favor, informe seu telefone/WhatsApp.');
+  }
+  if(n===3){
+    // Sem validação obrigatória na etapa 2 (tudo opcional exceto saúde)
+  }
+  [1,2,3].forEach(i=>document.getElementById('etapa'+i).classList.add('hidden'));
+  document.getElementById('etapa'+n).classList.remove('hidden');
+  document.getElementById('progress-fill').style.width=(n/3*100)+'%';
+  const labels=['Etapa 1 de 3 — Dados Pessoais','Etapa 2 de 3 — Anamnese','Etapa 3 de 3 — Autorização'];
+  document.getElementById('etapa-label').textContent=labels[n-1];
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ── Coletar checkboxes ──
+function getChecked(containerId){
+  return Array.from(document.querySelectorAll('#'+containerId+' input:checked')).map(c=>c.value);
+}
+function getRadio(name){
+  const el=document.querySelector('[name="'+name+'"]:checked');
+  return el?el.value:'';
+}
+
+// ── Enviar ──
+async function enviar(){
+  if(!document.getElementById('aceito').checked) return alert('Por favor, aceite os termos para continuar.');
+  if(!document.getElementById('assinaturaDigital').value.trim()) return alert('Por favor, assine digitalmente com seu nome completo.');
+
+  const btn=document.getElementById('btn-enviar');
+  btn.disabled=true; btn.textContent='Enviando...';
+
+  const indicadoPorVal = document.getElementById('indicadoPor').value;
+  const indicadorNome  = document.getElementById('indicador').value.trim();
+
+  const ficha = {
+    // Dados pessoais
+    nome:         document.getElementById('nome').value.trim(),
+    dataNasc:     document.getElementById('dataNasc').value,
+    cpf:          document.getElementById('cpf').value.trim(),
+    telefone:     document.getElementById('telefone').value.trim(),
+    email:        document.getElementById('email').value.trim(),
+    endereco:     document.getElementById('endereco').value.trim(),
+    indicadoPor:  indicadoPorVal==='indicacao' ? (indicadorNome||'Indicação') : indicadoPorVal,
+
+    // Anamnese
+    doencas:          getChecked('doencas').join(', '),
+    doencasOutras:    document.getElementById('doencasOutras').value.trim(),
+    usaMedicamentos:  getRadio('usaMed'),
+    medicamentos:     document.getElementById('medicamentos').value.trim(),
+    alergias:         getRadio('alergia')==='Sim' ? document.getElementById('alergias').value.trim() : 'Não',
+    gravida:          getRadio('gravida'),
+    procAnteriores:   getRadio('procAnterior')==='Sim' ? document.getElementById('procAnteriores').value.trim() : 'Não',
+    tipoPele:         getRadio('tipoPele'),
+    queixas:          getChecked('queixas') ? Array.from(document.querySelectorAll('.check-group input:checked')).filter(c=>['Rugas e linhas finas','Flacidez','Manchas','Acne / Cicatrizes','Olheiras','Contorno facial','Hidratação','Rejuvenescimento geral'].includes(c.value)).map(c=>c.value).join(', ') : '',
+    protetor:         getRadio('protetor'),
+    fuma:             getRadio('fuma'),
+    obs:              document.getElementById('obs').value.trim(),
+
+    // Autorização
+    autorizaImagem:   getRadio('imgAutoriza'),
+    assinaturaDigital:document.getElementById('assinaturaDigital').value.trim(),
+    dataPreenchimento:new Date().toISOString(),
+    status:           'pendente', // aguardando importação no sistema
+    id:               'ficha_' + Date.now(),
+  };
+
+  try {
+    await window.storage.set('ficha_' + Date.now() + '_' + ficha.nome.replace(/\s/g,'_'), JSON.stringify(ficha), true);
+    document.getElementById('nome-sucesso').textContent = ficha.nome.split(' ')[0];
+    ['etapa1','etapa2','etapa3','progresso-wrap'].forEach(id=>{
+      const el=document.getElementById(id); if(el) el.classList.add('hidden');
+    });
+    document.getElementById('sucesso').classList.remove('hidden');
+  } catch(e) {
+    // Fallback: salvar localmente e mostrar código para copiar
+    const codigo = btoa(JSON.stringify(ficha));
+    document.getElementById('btn-enviar').disabled = false;
+    document.getElementById('btn-enviar').textContent = '✓ Enviar Ficha';
+    alert('Ficha preenchida! Mostre este código para a recepção:\n\n' + ficha.nome + ' — ' + ficha.telefone);
+  }
+}
+</script>
+</body>
+</html>
